@@ -1,0 +1,32 @@
+AES - Advanced Encryption Standard
+ - main symetric encryption method
+ - the key sizes are 128, 192, 256 bits
+ - it's a block alg. , block size = 16 bytes = 128 bits
+ - specified in FIPS 197
+ - NK = number of 32 bits words = 4, 6, 8
+ - NR = numbe of rounds = NK+6 = 10, 12, 14
+ - each round consists of 4 main functions
+ - the 4x4 bites array called state: input, output
+
+MATH Operations on bytes(unsigned char s)
+Each byte is represented as a ploynomial of degree <= 7with coeff. in Z, = {0,1}
+01101101 -> 0*x^7+ 1*x^6 + 1*x^5 + 0*x^4 + 1*x^3 + 1*x^2 + 0*x + 1 = x^6 + x^4 + x^3 + x^2 + x
+
+4.1 Addition is XOR at bit
+4.2 Multiplication (dot operation)
+      To multiply 2 bytes, take their polynomial representation, multiply the 2 ploynomilas, 
+      reduce the result modulo a ploynomial of degree 8: x^8 + x^4 + x^3 + x + 1
+         x^8 + x^4 + x^3 + x + 1 = 0 => x^8 = -x^4 - x^3 - x - 1= x^4 + x^3 + x + 1
+
+	Example: 
+		{57}·{83} = 01010111 · 10000011 = {x^6 + x^4 + x^2 + x + 1} · {x^7 + x + 1} =
+			  = x^13 + x^11 + x^9 + x^8 + x^7 + x^7 + x^5 + x^3 + x^3 + x + x^6 + x^4 + x^2 + x + 1 = 
+ 			  = x^13 + x^11 + x^9 + x^8 + x^6 + x^5 + x^4 + x^3 + 1 = 
+
+			 --  x^13 = x^8 * x^5 = x^5(x^4 + x^3 + x + 1) = x^9 + x^8 + x^6 + x^5
+			 --  x^11  = x^2 * x^3 = x^3(x^4 + x^3 + x + 1) = x^7 + x^6 + x^4 + x^3
+
+			  = x^9 + x^8 + x^6 + x^5 + x^7 + x^6 + x^4 + x^3 + x^6 + x^5 + x^4 + x^3 + 1 
+			  = x^7 + x^6 + 1 = 1100001 = {C1} = 0xC1
+
+	
